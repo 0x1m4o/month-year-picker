@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart' hide YearPicker;
 
 import 'l10n/month_year_picker_localizations.dart';
@@ -171,7 +169,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
     final textTheme = theme.textTheme;
     // Constrain the textScaleFactor to the largest supported value to prevent
     // layout issues.
-    final textScaleFactor = math.min(media.textScaleFactor, 1.3);
+    final textScaler = media.textScaler.clamp(maxScaleFactor: 1.3);
     final direction = Directionality.of(context);
 
     final dateText = materialLocalizations.formatMonthYear(_selectedDate);
@@ -214,7 +212,8 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
       children: [
         TextButton(
           style: TextButton.styleFrom(
-            foregroundColor: Theme.of(context).textTheme.bodySmall?.color, padding: const EdgeInsetsDirectional.fromSTEB(
+            foregroundColor: Theme.of(context).textTheme.bodySmall?.color,
+            padding: const EdgeInsetsDirectional.fromSTEB(
               24.0,
               16.0,
               24.0,
@@ -321,7 +320,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
       },
     );
 
-    final dialogSize = _dialogSize * textScaleFactor;
+    final dialogSize = _dialogSize * textScaler.scale(1.0);
     return Directionality(
       textDirection: direction,
       child: Dialog(
@@ -337,7 +336,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
           curve: Curves.easeIn,
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              textScaleFactor: textScaleFactor,
+              textScaler: textScaler,
             ),
             child: Builder(
               builder: (context) {
